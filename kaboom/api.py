@@ -1,5 +1,7 @@
 import json
 import requests
+import sys
+import time
 from uuid import uuid4
 
 import constants
@@ -39,14 +41,20 @@ class Api(object):
         params = {
             'a': address
         }
-        response = self._rpc_post('balanceAt', params)
-        return int(response, 16)
+        balance = self._rpc_post('balanceAt', params)
+        if balance == "0x":
+            return 0
+        else:
+            return int(balance, 16)
 
     def block(self, nr):
         params = {
             'a': nr
         }
         return self._rpc_post('block', params)
+
+    def coinbase(self):
+        return self._rpc_post('coinbase', None)
 
     def is_listening(self):
         return self._rpc_post('isListening', None)
@@ -90,3 +98,23 @@ class Api(object):
             'xGasPrice': hex(gas_price),
             'xValue': hex(value)}
         return self._rpc_post('transact', params)
+
+    def wait_for_next_block(self, verbose=False):
+        if verbose:
+            sys.stdout.write('Waiting for next block to be mined')
+            start_time = time.time()
+
+        last_block = self.last_block()
+        while True:
+            if verbose:
+                sys.stdout.write('.')
+                sys.stdout.flush()
+            time.sleep(constants.MINING_POLL_SLEEP)
+            block = self.last_block()
+            if block != last_block:
+                break
+
+        if verbose:
+            print
+            delta = time.time() - start_time
+            print "Duration: %ds" % delta
