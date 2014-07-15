@@ -2,10 +2,11 @@
 
 import argparse
 import time
+from pprint import pprint
 
 import kaboom.api
 import kaboom.compiler
-from kaboom.constants import MIN_MINING_BALANCE, MINING_SLEEP
+from kaboom.constants import MIN_MINING_BALANCE, MINING_POLL_SLEEP
 
 
 def wait_for_startup(api, coinbase):
@@ -13,8 +14,8 @@ def wait_for_startup(api, coinbase):
         balance = api.balance_at(coinbase)
         print "Balance:", balance
         if balance < MIN_MINING_BALANCE:
-            print "Insufficient balance, sleeping %d seconds" % MINING_SLEEP
-            time.sleep(MINING_SLEEP)
+            print "Insufficient balance, sleeping %d seconds" % MINING_POLL_SLEEP
+            time.sleep(MINING_POLL_SLEEP)
         else:
             break
     print "Listening:", api.is_listening()
@@ -22,7 +23,7 @@ def wait_for_startup(api, coinbase):
     print "Ready!"
 
 
-def submit(args):
+def create(args):
     api = kaboom.api.Api()
     key = api.key()
     coinbase = api.secret_to_address(key)
@@ -32,8 +33,12 @@ def submit(args):
     bytecode = kaboom.compiler.compile_lll(args.infile)
     print bytecode.encode('hex')
 
+    contract = api.create(bytecode, key)
+    print "Contract \"%s\" is at address %s" % (args.infile, contract)
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('infile')
     args = parser.parse_args()
-    submit(args)
+    create(args)

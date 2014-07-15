@@ -56,6 +56,15 @@ class Api(object):
     def coinbase(self):
         return self._rpc_post('coinbase', None)
 
+    def create(self, code, secret, gas=constants.DEFAULT_GAS, gas_price=constants.GAS_PRICE, endowment=0):
+        params = {
+            'bCode': code,
+            'sec': secret,
+            'xEndowment': hex(endowment),
+            'xGas': hex(gas),
+            'xGasPrice': hex(gas_price)}
+        return self._rpc_post('create', params)
+
     def is_listening(self):
         return self._rpc_post('isListening', None)
 

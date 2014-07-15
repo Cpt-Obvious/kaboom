@@ -7,7 +7,7 @@ def compile_cli(cmd, args, filename):
     except subprocess.CalledProcessError as e:
         raise CompilationException(e.output)
 
-    return output.strip().decode('hex')
+    return output.strip()
 
 
 def compile_lll(filename):
