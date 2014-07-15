@@ -2,7 +2,7 @@
 
 from pprint import pprint
 
-import kaboom
+import kaboom.api
 
 
 def walk_blocks(api):
