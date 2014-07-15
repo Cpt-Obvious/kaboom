@@ -2,7 +2,6 @@
 
 import argparse
 import time
-from pprint import pprint
 
 import kaboom.api
 import kaboom.compiler

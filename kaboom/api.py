@@ -53,6 +53,12 @@ class Api(object):
         }
         return self._rpc_post('block', params)
 
+    def check(self, addresses):
+        params = {
+            'a': addresses
+        }
+        return self._rpc_post('check', params)
+
     def coinbase(self):
         return self._rpc_post('coinbase', None)
 
@@ -85,6 +91,9 @@ class Api(object):
             's': contract
         }
         return self._rpc_post('lll', params)
+
+    def peer_count(self):
+        return self._rpc_post('peerCount', None)
 
     def secret_to_address(self, key):
         params = {
