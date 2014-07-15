@@ -1,0 +1,21 @@
+{
+  [0] "Bank"
+  (call (- (gas) 100) 0x2d0aceee7e5ab874e22ccf8d1a649f59106d74e8 0 0 4 0 0)
+
+  (return 0 (lll {
+    (if (>= @@(caller) (calldataload 0))
+      ;; Withdrawal:
+      {
+        ;; Subtract the value from the balance of the account
+        [[ (caller) ]] (- @@(caller) (calldataload 0))
+        ;; Transfer the funds either to...
+        (if (<= (calldatasize) 32)
+          (call (- (gas) 100) (caller) (calldataload 0) 0 0 0 0)  ; ...the sender...
+          (call (- (gas) 100) (calldataload 32) (calldataload 0) 0 0 0 0)  ; ...or the supplied account.
+        )
+      }
+      ;; Deposit; just increase the account balance by that amount.
+      [[(caller)]] (+ @@(caller) (callvalue))
+    )
+  } 0))
+}

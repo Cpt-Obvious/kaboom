@@ -1,0 +1,4 @@
+docker-py==0.3.2
+ethereum-serpent==1.5.4
+flake8==2.2.2
+requests==2.2.1

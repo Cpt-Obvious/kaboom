@@ -1,0 +1,15 @@
+{
+  [0] "Splitter"
+  (call (- (gas) 100) 0x2d0aceee7e5ab874e22ccf8d1a649f59106d74e8 0 0 8 0 0)
+
+  (return 0 (lll {
+    [count] (/ (calldatasize) 32)
+    [pay] (/ (callvalue) @count)
+
+    ;; Cycle through each address
+    (for {} (< @i @count) [i](+ @i 1)
+      ;; Send to 'i'th argument (assuming it's an address).
+      (call (- (gas) 100) (calldataload (* @i 32)) @pay 0 0 0 0)
+    )
+  } 0))
+}
