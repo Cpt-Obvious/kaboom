@@ -4,11 +4,14 @@ import subprocess
 
 def compile_cli(cmd, args, filename):
     try:
-        output = subprocess.check_output([cmd] + args + [filename], stderr=subprocess.STDOUT)
+        output = subprocess.check_output([cmd] + args + [filename], stderr=subprocess.STDOUT).strip()
     except subprocess.CalledProcessError as e:
         raise CompilationException(e.output)
 
-    return output.strip()
+    if not output.startswith('0x'):
+        output = '0x' + output
+
+    return output
 
 
 def compile(filename):

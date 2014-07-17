@@ -36,7 +36,7 @@ def create(args):
     print "Contract \"%s\" is at address %s" % (args.infile, contract)
     api.wait_for_next_block(verbose=True)
 
-    print "Verifying: ", api.is_contract_at(contract)
+    assert api.is_contract_at(contract), "contract not present at address"
 
 
 if __name__ == '__main__':
