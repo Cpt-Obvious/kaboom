@@ -29,11 +29,14 @@ def create(args):
     print "Coinbase address is:", coinbase
     wait_for_startup(api, coinbase)
 
-    bytecode = kaboom.compiler.compile_lll(args.infile)
-    print bytecode.encode('hex')
+    bytecode = kaboom.compiler.compile(args.infile)
+    print bytecode
 
     contract = api.create(bytecode, key)
     print "Contract \"%s\" is at address %s" % (args.infile, contract)
+    api.wait_for_next_block(verbose=True)
+
+    print "Verifying: ", api.is_contract_at(contract)
 
 
 if __name__ == '__main__':

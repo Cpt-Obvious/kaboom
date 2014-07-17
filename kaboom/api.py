@@ -71,6 +71,12 @@ class Api(object):
             'xGasPrice': hex(gas_price)}
         return self._rpc_post('create', params)
 
+    def is_contract_at(self, address):
+        params = {
+            'a': address
+        }
+        return self._rpc_post('isContractAt', params)
+
     def is_listening(self):
         return self._rpc_post('isListening', None)
 
