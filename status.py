@@ -3,11 +3,11 @@
 from pprint import pprint
 
 import kaboom.api
+import kaboom.vm
 
 
 def status(api):
-    coinbase = api.coinbase()
-    print "Coinbase: %s" % coinbase
+    print "Coinbase: %s" % api.coinbase()
     print "Listening? %s" % api.is_listening()
     print "Mining? %s" % api.is_mining()
     print "Peer count: %d" % api.peer_count()
@@ -21,8 +21,11 @@ def status(api):
     for key in keys:
         address = api.secret_to_address(key)
         balance = api.balance_at(address)
-        print "- %s %d" % (address, balance)
+        print "- %s %.4e" % (address, balance)
 
 if __name__ == '__main__':
+    kaboom.vm.ensure_running()
     api = kaboom.api.Api()
+    api.wait_for_startup(verbose=True)
+
     status(api)

@@ -123,6 +123,35 @@ class Api(object):
             'xValue': hex(value)}
         return self._rpc_post('transact', params)
 
+    def wait_for_startup(self, min_balance=False, verbose=False):
+        listening = False
+
+        for n in range(5):
+            try:
+                listening = self.is_listening()
+                if listening:
+                    break
+            except requests.exceptions.ConnectionError:
+                if verbose:
+                    print "API connection refused, sleeping..."
+                time.sleep(constants.POLL_SLEEP)
+
+        if not listening:
+            raise ApiException(61, "Connection refused")
+
+        if min_balance:
+            self.wait_for_min_balance(verbose)
+
+    def wait_for_min_balance(self, verbose=False):
+        coinbase = self.coinbase()
+        while True:
+            balance = self.balance_at(coinbase)
+            if verbose:
+                print "Waiting for minimum balance, need %.4e got %.4e" % (constants.MIN_MINING_BALANCE, balance)
+            if balance >= constants.MIN_MINING_BALANCE:
+                break
+            self.wait_for_next_block(verbose)
+
     def wait_for_next_block(self, verbose=False):
         if verbose:
             sys.stdout.write('Waiting for next block to be mined')
@@ -133,7 +162,7 @@ class Api(object):
             if verbose:
                 sys.stdout.write('.')
                 sys.stdout.flush()
-            time.sleep(constants.MINING_POLL_SLEEP)
+            time.sleep(constants.POLL_SLEEP)
             block = self.last_block()
             if block != last_block:
                 break

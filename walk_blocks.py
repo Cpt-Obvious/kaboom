@@ -3,6 +3,7 @@
 from pprint import pprint
 
 import kaboom.api
+import kaboom.vm
 
 
 def walk_blocks(api):
@@ -17,5 +18,6 @@ def walk_blocks(api):
         nr -= 1
 
 if __name__ == '__main__':
+    kaboom.vm.ensure_running()
     api = kaboom.api.Api()
     walk_blocks(api)

@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import kaboom.api
+import kaboom.vm
 from kaboom.constants import FINNEY
 
 
@@ -19,5 +20,8 @@ def transact(api):
 
 
 if __name__ == '__main__':
+    kaboom.vm.ensure_running()
     api = kaboom.api.Api()
+    api.wait_for_startup(min_balance=True)
+
     transact(api)
