@@ -13,7 +13,7 @@ def transact(api):
 
     start_balance = api.balance_at(dest)
     print "Start balance", start_balance
-    api.transact(dest, coinbase_key, value=100 * FINNEY)
+    api.transact(dest, coinbase_key, value=1 * FINNEY)
     api.wait_for_next_block(verbose=True)
     end_balance = api.balance_at(dest)
     print "End balance", end_balance
