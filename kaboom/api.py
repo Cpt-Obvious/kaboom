@@ -4,6 +4,8 @@ import sys
 import time
 from uuid import uuid4
 
+import serpent
+
 import constants
 
 
@@ -114,6 +116,9 @@ class Api(object):
         return self._rpc_post('storageAt', params)
 
     def transact(self, dest, secret, data="", gas=constants.DEFAULT_GAS, gas_price=constants.GAS_PRICE, value=0):
+        if data:
+            data = "0x" + serpent.encode_datalist(data).encode('hex')
+
         params = {
             'aDest': dest,
             'bData': data,

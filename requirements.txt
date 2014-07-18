@@ -2,3 +2,5 @@ docker-py==0.3.2
 ethereum-serpent==1.5.4
 flake8==2.2.2
 requests==2.2.1
+pytest==2.5.2
+pytest-xdist==1.10

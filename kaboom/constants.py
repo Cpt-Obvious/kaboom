@@ -14,4 +14,4 @@ GENESIS_HASH = "0000000000000000000000000000000000000000000000000000000000000000
 
 VM_NAME = "eth-json-rpc"
 VM_CMD = "eth --json-rpc --mining on"
-VM_IMAGE = "cpp-ethereum-headless"
+VM_IMAGE = "cptobvious/cpp-ethereum-headless"
