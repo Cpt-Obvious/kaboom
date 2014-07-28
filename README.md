@@ -64,3 +64,11 @@ Display running Docker processes.
 `docker logs -f eth-json-rpc`
 
 Tail the docker logs of the `eth-json-rpc` image.
+
+## Debugging HTTP
+
+To capture the HTTP trafic, install [mitmproxy](http://mitmproxy.org/) and run `mitmproxy` or `mitmdump`. Then ensure that the environment variable `HTTP_PROXY` is set when calling one of the above command line tools. Example:
+
+`HTTP_PROXY="http://127.0.0.1:8080" ./transact.py`
+
+If you run `mitmdump -w dumpfile`, the `dumpfile` will be written do disk and can be inspected with `mitmproxy -r dumpfile`
