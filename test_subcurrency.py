@@ -4,6 +4,7 @@ import kaboom.api
 import kaboom.compiler
 import kaboom.vm
 
+
 def _test_subcurrency(infile, market_cap):
     kaboom.vm.ensure_running()
     api = kaboom.api.Api()
@@ -30,17 +31,14 @@ def _test_subcurrency(infile, market_cap):
     assert int(api.storage_at(contract, owner), 16) == market_cap - amount
     assert int(api.storage_at(contract, dest), 16) == amount
 
+
 def test_subcurrency_serpent():
     _test_subcurrency("examples/subcurrency.se", 1000000)
+
 
 def test_subcurrency_lll():
     _test_subcurrency("examples/currency.lll", int('0x1000000000000000000000000', 16))
 
+
 def test_subcurrency_mutan():
     _test_subcurrency("examples/subcurrency.mu", 1000000)
-
-
-
-
-
-
