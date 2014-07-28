@@ -36,6 +36,9 @@ def test_subcurrency_serpent():
 def test_subcurrency_lll():
     _test_subcurrency("examples/currency.lll", int('0x1000000000000000000000000', 16))
 
+def test_subcurrency_mutan():
+    _test_subcurrency("examples/subcurrency.mu", 1000000)
+
 
 
 

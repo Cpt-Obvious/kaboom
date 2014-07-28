@@ -151,10 +151,10 @@ class Api(object):
         coinbase = self.coinbase()
         while True:
             balance = self.balance_at(coinbase)
-            if verbose:
-                print "Waiting for minimum balance, need %.4e got %.4e" % (constants.MIN_MINING_BALANCE, balance)
             if balance >= constants.MIN_MINING_BALANCE:
                 break
+            if verbose:
+                print "Waiting for minimum balance, need %.4e got %.4e" % (constants.MIN_MINING_BALANCE, balance)
             self.wait_for_next_block(verbose)
 
     def wait_for_next_block(self, verbose=False):
