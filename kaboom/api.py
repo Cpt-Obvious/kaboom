@@ -32,6 +32,9 @@ class Api(object):
         headers = {'content-type': 'application/json'}
 
         r = requests.post(self.jsonrpc_url, data=json.dumps(payload), headers=headers)
+        if r.status_code >= 400:
+            raise ApiException(r.status_code, r.reason)
+
         response = r.json()
 
         if 'error' in response:
@@ -136,7 +139,7 @@ class Api(object):
                 listening = self.is_listening()
                 if listening:
                     break
-            except requests.exceptions.ConnectionError:
+            except (requests.exceptions.ConnectionError, ApiException):
                 if verbose:
                     print "API connection refused, sleeping..."
                 time.sleep(constants.POLL_SLEEP)
