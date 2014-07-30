@@ -67,7 +67,7 @@ class Api(object):
     def coinbase(self):
         return self._rpc_post('coinbase', None)
 
-    def create(self, code, secret, gas=constants.DEFAULT_GAS, gas_price=constants.GAS_PRICE, endowment=0):
+    def create(self, code, secret=constants.DEFAULT_KEY, gas=constants.DEFAULT_GAS, gas_price=constants.GAS_PRICE, endowment=0):
         params = {
             'bCode': code,
             'sec': secret,
@@ -118,7 +118,7 @@ class Api(object):
             'x': index}
         return self._rpc_post('storageAt', params)
 
-    def transact(self, dest, secret, data="", gas=constants.DEFAULT_GAS, gas_price=constants.GAS_PRICE, value=0):
+    def transact(self, dest, secret=constants.DEFAULT_KEY, data="", gas=constants.DEFAULT_GAS, gas_price=constants.GAS_PRICE, value=0):
         if data:
             data = "0x" + serpent.encode_datalist(data).encode('hex')
 
@@ -131,7 +131,7 @@ class Api(object):
             'xValue': hex(value)}
         return self._rpc_post('transact', params)
 
-    def wait_for_startup(self, min_balance=False, verbose=False):
+    def wait_for_startup(self, verbose=False):
         listening = False
 
         for n in range(5):
@@ -146,19 +146,6 @@ class Api(object):
 
         if not listening:
             raise ApiException(61, "Connection refused")
-
-        if min_balance:
-            self.wait_for_min_balance(verbose)
-
-    def wait_for_min_balance(self, verbose=False):
-        coinbase = self.coinbase()
-        while True:
-            balance = self.balance_at(coinbase)
-            if balance >= constants.MIN_MINING_BALANCE:
-                break
-            if verbose:
-                print "Waiting for minimum balance, need %.4e got %.4e" % (constants.MIN_MINING_BALANCE, balance)
-            self.wait_for_next_block(verbose)
 
     def wait_for_next_block(self, verbose=False):
         if verbose:

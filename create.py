@@ -4,6 +4,7 @@ import argparse
 
 import kaboom.api
 import kaboom.compiler
+import kaboom.constants
 import kaboom.vm
 
 
@@ -11,8 +12,7 @@ def create(api, infile):
     bytecode = kaboom.compiler.compile(infile)
     print "Contract bytecode:", bytecode
 
-    key = api.key()
-    contract = api.create(bytecode, key)
+    contract = api.create(bytecode, kaboom.constants.DEFAULT_KEY)
     print "Contract \"%s\" is at address %s" % (infile, contract)
     api.wait_for_next_block(verbose=True)
 
@@ -26,6 +26,6 @@ if __name__ == '__main__':
 
     kaboom.vm.ensure_running()
     api = kaboom.api.Api()
-    api.wait_for_startup(min_balance=True, verbose=True)
+    api.wait_for_startup(verbose=True)
 
     create(api, args.infile)
