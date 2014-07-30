@@ -19,4 +19,4 @@ DEFAULT_ADDRESS = '0x' + utils.privtoaddr(DEFAULT_KEY[2:])  # cd2a3d9f938e13cd94
 
 VM_NAME = "eth-json-rpc"
 VM_CMD = "eth --json-rpc --mining on -v 4"
-VM_IMAGE = "cptobvious/cpp-ethereum-headless"
+VM_IMAGE = "cptobvious/cpp-ethereum-develop"
