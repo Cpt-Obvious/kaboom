@@ -1,2 +1,2 @@
 #!/bin/sh
-docker pull cptobvious/cpp-ethereum-headless
+docker pull cptobvious/cpp-ethereum-develop
